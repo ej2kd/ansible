@@ -1,0 +1,9 @@
+# tasks file for node
+- name: Setup latest nodejs
+  shell: curl -fsSL https://rpm.nodesource.com/setup_16.x | sudo bash -
+
+- name: Install node.js
+  become: yes
+  yum:
+    name: nodejs
+    state: present

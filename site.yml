@@ -1,0 +1,7 @@
+- hosts: targethost
+  become: yes
+  roles:
+    - rails
+    - nodejs
+    - mysql
+    - nginx

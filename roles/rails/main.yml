@@ -1,0 +1,23 @@
+- name: Install git
+  become: yes
+  yum:
+    name: git
+    state: latest
+
+- name: Install packages to build Ruby
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - gcc
+    - gcc-c++
+    - openssl-devel
+    - readline-devel
+    - zlib-devel
+
+- name: Install rbenv
+  become: no
+  git:
+    repo: https://github.com/rbenv/rbenv.git
+    dest: ~/.rbenv
