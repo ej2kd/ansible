@@ -31,9 +31,8 @@ $ ansible -m ping {host_group}
 # ディレクトリ構造
 ```
 .
+├── README.md
 ├── ansible.cfg
-├── group_vars
-│   └── all.yml
 ├── hosts
 ├── roles
 │   ├── mysql
@@ -44,9 +43,11 @@ $ ansible -m ping {host_group}
 │   │   │   └── main.yml
 │   │   ├── tasks
 │   │   │   └── main.yml
-│   │   └── templates
-│   │       ├── nginx.conf.j2
-│   │       └── rails.conf.j2
+│   │   ├── templates
+│   │   │   ├── nginx.conf.j2
+│   │   │   └── rails.conf.j2
+│   │   └── vars
+│   │       └── main.yml
 │   ├── nodejs
 │   │   └── tasks
 │   │       └── main.yml
