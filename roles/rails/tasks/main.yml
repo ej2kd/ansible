@@ -1,0 +1,81 @@
+- name: Install git
+  yum:
+    name: git
+    state: latest
+- name: Check rbenv installation
+  command: "{{ rbenv_path }}/bin/rbenv --version"
+  register: rbenv_exists
+  changed_when: false
+  ignore_errors: yes
+- name: Install packages to build Ruby
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - gcc
+    - gcc-c++
+    - openssl-devel
+    - readline-devel
+    - zlib-devel
+- name: Install rbenv
+  git:
+    repo: https://github.com/rbenv/rbenv.git
+    dest: "{{ rbenv_path }}"
+  when: rbenv_exists is failed
+- name: Add rbenv_path to $PATH
+  template:
+    src: rbenv.sh.j2
+    dest: /etc/profile.d/rbenv.sh
+    mode: 0755
+- name: Install ruby-build
+  git:
+    repo: https://github.com/rbenv/ruby-build.git
+    dest: "{{ rbenv_path }}/plugins/ruby-build"
+  when: rbenv_exists is failed
+# "~/.rbenv"ディレクトリの所有者をec2-userにしておかないと、必要なディレクトリを作成できず、その後の処理に失敗する
+- name: Change rbenv dir owner
+  file:
+    path: "{{ rbenv_path }}"
+    state: directory
+    owner: "{{ ec2_user }}"
+    group: "{{ ec2_user }}"
+    mode: "0775"
+    recurse: yes
+- name: Check ruby installation
+  become_user: "{{ ec2_user }}"
+  shell: "{{ rbenv_path }}/bin/rbenv versions"
+  register: rbenv_versions
+  changed_when: false
+  ignore_errors: yes
+- name: Install ruby {{ ruby_version }}
+  become_user: "{{ ec2_user }}"
+  shell: "{{ rbenv_path }}/bin/rbenv install {{ ruby_version }}"
+  when: ruby_version not in rbenv_versions.stdout
+  environment:
+    CONFIGURE_OPTS: "--disable-install-doc --disable-install-rdoc --disable-install-capi"
+- name: Check global ruby version
+  become_user: "{{ ec2_user }}"
+  shell: "{{ rbenv_path }}/bin/rbenv global"
+  register: ruby_global_version
+  changed_when: false
+  ignore_errors: yes
+- name: Change global ruby version
+  become_user: "{{ ec2_user }}"
+  shell: "{{ rbenv_path }}/bin/rbenv global {{ ruby_version }}"
+  when: ruby_version not in ruby_global_version.stdout
+- name: Execute rbenv rehash
+  become_user: "{{ ec2_user }}"
+  shell: "{{ rbenv_path }}/bin/rbenv rehash"
+- name: Install bundler and rails
+  become_user: "{{ ec2_user }}"
+  gem:
+    name: "{{ item.name }}"
+    version: "{{ item.version }}"
+    executable: "{{ rbenv_path }}/shims/gem"
+    # デフォルトだと"~/.rbenv/"ではなく、"~/.gem/"以下にインストールされるため、user_installを解除する
+    user_install: no
+  loop:
+    - name: bundler
+      version: "{{ bundle_version }}"
+    - name: rails
+      version: "{{ rails_version }}"

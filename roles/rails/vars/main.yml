@@ -1,0 +1,4 @@
+rbenv_path: "{{ home_path }}/.rbenv"
+ruby_version: 2.6.8
+bundle_version: 2.2.29
+rails_version: 6.1.4

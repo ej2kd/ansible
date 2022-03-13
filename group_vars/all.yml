@@ -1,0 +1,4 @@
+ec2_user: ec2-user
+home_path: "/home/{{ ec2_user }}"
+app_name: YOUR_APP_NAME
+dns_name: YOUR_ELB_DNS_NAME
