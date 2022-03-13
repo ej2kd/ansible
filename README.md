@@ -1,7 +1,7 @@
 # ansible
 AWSのEC2インスタンスにRailsアプリを実行する環境構築を行うサンプルコード
 # 前提
-ローカル環境からEC2インスタンスに対して、SSH接続し、Ansibleを実行する。
+ローカル環境からEC2インスタンスに対してSSH接続し、Ansibleを実行する。
 ## 実行環境
 macOS Monterey Version 12.2.1
 # 環境構築
@@ -66,9 +66,9 @@ $ ansible -m ping {host_group}
 - mysqlのインストール
 - nginxのインストール、設定ファイルの作成、再起動
 ## roles
-Ansibleで実行するタスクの内容をrole単位に分割して配置。
-各role内のtasks/main.ymlファイルで環境の構築を行う。
-configファイルやbashスクリプトなどを生成する必要がある場合は、templates内のjinja2テンプレートを参照する。
+Ansibleで実行するタスクの内容をrole単位に分割して配置。<br>
+各role内のtasks/main.ymlファイルで環境の構築を行う。<br>
+configファイルやbashスクリプトなどを生成する必要がある場合は、templates内のjinja2テンプレートを参照する。<br>
 role内で変数を参照する必要がある場合は、各role内のvarsディレクトリを参照する。
 ## ansible.cfg
 インベントリファイルの指定およびSSH接続時の設定を記述。
