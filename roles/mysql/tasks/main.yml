@@ -1,5 +1,4 @@
 - name: Install MySQL
-  become: yes
   yum:
     name: "{{ item }}"
     state: present
