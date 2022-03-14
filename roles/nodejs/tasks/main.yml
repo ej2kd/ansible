@@ -1,14 +1,12 @@
 - name: Setup latest nodejs
   shell: curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
 - name: Install node.js
-  become: yes
   yum:
     name: nodejs
     state: present
 - name: Install yarn package
   shell: curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
 - name: Install Yarn
-  become: yes
   yum:
     name: yarn
     state: present
