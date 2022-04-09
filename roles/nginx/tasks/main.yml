@@ -1,5 +1,5 @@
 - name: Enable Nginx for Amazon Linux2
-  shell: amazon-linux-extras enable nginx1
+  command: amazon-linux-extras enable nginx1
 - name: Install Nginx
   yum:
     name: nginx

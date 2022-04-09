@@ -1,4 +1,5 @@
 - name: Setup latest nodejs
+  # パイプを使用するため、ここではshellコマンドを使用
   shell: curl -fsSL https://rpm.nodesource.com/setup_lts.x | sudo bash -
 - name: Install node.js
   yum:

@@ -1,2 +1,2 @@
-app_name: YOUR_APP_NAME
-dns_name: YOUR_ELB_DNS_NAME
+app_name: my-rails-shop-app # YOUR_APP_NAME
+dns_name: ALB-for-rails-app-1604933419.ap-northeast-1.elb.amazonaws.com # YOUR_ELB_DNS_NAME
