@@ -43,29 +43,29 @@
     recurse: yes
 - name: Check ruby installation
   become_user: "{{ ec2_user }}"
-  shell: "{{ rbenv_path }}/bin/rbenv versions"
+  command: "{{ rbenv_path }}/bin/rbenv versions"
   register: rbenv_versions
   changed_when: false
   ignore_errors: yes
 - name: Install ruby {{ ruby_version }}
   become_user: "{{ ec2_user }}"
-  shell: "{{ rbenv_path }}/bin/rbenv install {{ ruby_version }}"
+  command: "{{ rbenv_path }}/bin/rbenv install {{ ruby_version }}"
   when: ruby_version not in rbenv_versions.stdout
   environment:
     CONFIGURE_OPTS: "--disable-install-doc --disable-install-rdoc --disable-install-capi"
 - name: Check global ruby version
   become_user: "{{ ec2_user }}"
-  shell: "{{ rbenv_path }}/bin/rbenv global"
+  command: "{{ rbenv_path }}/bin/rbenv global"
   register: ruby_global_version
   changed_when: false
   ignore_errors: yes
 - name: Change global ruby version
   become_user: "{{ ec2_user }}"
-  shell: "{{ rbenv_path }}/bin/rbenv global {{ ruby_version }}"
+  command: "{{ rbenv_path }}/bin/rbenv global {{ ruby_version }}"
   when: ruby_version not in ruby_global_version.stdout
 - name: Execute rbenv rehash
   become_user: "{{ ec2_user }}"
-  shell: "{{ rbenv_path }}/bin/rbenv rehash"
+  command: "{{ rbenv_path }}/bin/rbenv rehash"
 - name: Install bundler and rails
   become_user: "{{ ec2_user }}"
   gem:
